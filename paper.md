@@ -1,5 +1,5 @@
 ---
-title: swiftsimio: A python library for reading SWIFT data
+title: "swiftsimio: A python library for reading SWIFT data"
 tags:
   - Python
   - astronomy
