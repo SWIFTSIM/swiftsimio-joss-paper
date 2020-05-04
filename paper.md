@@ -82,14 +82,21 @@ attached.
 The table below shows what each particle type corresponds to and how it is
 accessed in `swiftsimio`.
 
-| Particle type | `swiftsimio` name | Description                                                                                     |
-|:-------------:|:-----------------:|-------------------------------------------------------------------------------------------------|
-|       0       |       `gas`       | Gas particles, the only type of particles to have hydrodynamics calculations performed on them. |
-|       1       |   `dark_matter`   | Dark matter particles, only feel the force of gravity.                                          |
-|       2       |     `boundary`    | Boundary particles; the same as dark matter but typically more massive.                         |
-|       3       | `second_boundary` | Boundary particles; the same as dark matter but typically more massive.                         |
-|       4       |      `stars`      | Star particles representing either individual stars or a stellar population.                    |
-|       5       |   `black_holes`   | Black hole particles representing individual black holes.                                       |
+| Particle type | `swiftsimio` name | Description                               |
+|:-------------:|:-----------------:|-------------------------------------------|
+|       0       |       `gas`       | Gas particles, the only type of particles |
+|               |                   | to have hydrodynamics calculations        |
+|               |                   | performed on them.                        |
+|       1       |   `dark_matter`   | Dark matter particles, only feel the      |
+|               |                   | force of gravity.                         |
+|       2       |     `boundary`    | Boundary particles; the same as dark      |
+|               |                   | matter but typically more massive.        |
+|       3       | `second_boundary` | Boundary particles; the same as dark      |
+|               |                   | matter but typically more massive.        |
+|       4       |      `stars`      | Star particles representing either        |
+|               |                   | individual stars or a stellar population. |
+|       5       |   `black_holes`   | Black hole particles representing         |
+|               |                   | individual black holes.                   |
 
 # Solving the data reduction challenge
 
