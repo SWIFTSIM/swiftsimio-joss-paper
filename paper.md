@@ -23,20 +23,20 @@ bibliography: bibliography.bib
 
 `swiftsimio` is a python package for reading data created by the SWIFT [@SWIFT]
 simulation code. SWIFT is designed to run cosmological hydrodynamics
-simulations that produce petabytes of data, and `swiftsimio` leverages the huge
-amounts of custom metadata that SWIFT produces to allow for chunked loading of
-the particle data and to enable integration with `unyt` [@unyt].
+simulations that produce petabytes of data, and `swiftsimio` leverages the
+custom metadata that SWIFT produces to allow for chunked loading of the
+particle data and to enable integration with `unyt` [@unyt].
 
 # Background
 
-Cosmological galaxy formation simulations have been used for decades now to
-enable the understanding of the process of galaxy formation. As time has
-progressed, so has the scale of these simulations. The state-of-the-art
-simulations planned for the next decade, using codes like SWIFT, will generate
-petabytes of data thanks to their use of hundreds of billions of particles.
-Analysing this data presents a unique challenge, as typically the data
-reduction is performed either on single compute nodes or even on individual
-desktop machines. 
+Cosmological gallaxy formation simulations are used to track simulated galaxies
+across cosmic time in an attempt to better understand the process of galaxy
+formation and evolution. As time has progressed, so has the scale of these
+simulations. The state-of-the-art simulations planned for the next decade,
+using codes like SWIFT, will generate petabytes of data thanks to their use of
+hundreds of billions of particles.  Analysing this data presents a unique
+challenge, with the data reduction performed on either single compute nodes or
+on individual desktop machines. 
 
 In the original EAGLE simulation [@EAGLE], just the co-ordinates of the gas
 particles in a single snapshot used 82 Gb of storage space. State-of-the-art
@@ -58,10 +58,10 @@ usually interested in using the particle data present in a few objects
 # Structure of a SWIFT snapshot
 
 At pre-determined times during a SWIFT simulation, a full particle dump is
-performed.  This particle dump is stored in the HDF5 format, with
-arrays corresponding to different properties, with the overall structure of the
-file being compatible with the Gadget-2 format [@Gadget2]. This is to enable
-cross-compatibility with other software projects.
+performed. This particle dump is stored in the HDF5 format, with arrays
+corresponding to different particle properties. The overall structure of the
+file conforms to the Gadget-2 specification [@Gadget2]. This is to enable
+compatibility with previous analysis pipelines.
 
 The SWIFT snapshot files have main datasets called `PartType{0,1,2,3,4,5}`,
 each with sub-datasets such as `Coordinates`, `Velocities`, etc.  that contain
@@ -77,7 +77,8 @@ coordinates = data.gas.coordinates
 ```
 where here `coordinates` is an `unyt` array containing the co-ordinates of all
 of the gas particles in the file with appropriate units and cosmology information
-attached.
+attached. This data is loaded lazily, with an array only loaded from file when
+it is requested for use by the user. This data is then cached for future use.
 
 The table below shows what each particle type corresponds to and how it is
 accessed in `swiftsimio`.
@@ -87,8 +88,8 @@ accessed in `swiftsimio`.
 |       0       |       `gas`       | Gas particles, the only type of particles |
 |               |                   | to have hydrodynamics calculations        |
 |               |                   | performed on them.                        |
-|       1       |   `dark_matter`   | Dark matter particles, only feel the      |
-|               |                   | force of gravity.                         |
+|       1       |   `dark_matter`   | Dark matter particles, only subject to    |
+|               |                   | the force of gravity.                     |
 |       2       |     `boundary`    | Boundary particles; the same as dark      |
 |               |                   | matter but typically more massive.        |
 |       3       | `second_boundary` | Boundary particles; the same as dark      |
@@ -101,11 +102,11 @@ accessed in `swiftsimio`.
 # Solving the data reduction challenge
 
 ![Pictorial representation of the top-level grid in SWIFT. The background shows
-the distribution of matter in the snapshot, with selected bound objects ('haloes')
-circled. `swiftsimio` can extract the particles from the snapshot contained in
-these haloes by finding the top-level cells that this sphere overlaps with, only
-load data contained in those cells. Each coloured region shows the top-level
-cells that would be loaded for the corresponding circled halo.](figure.pdf)
+the distribution of matter in the snapshot, with selected galaxies circled.
+`swiftsimio` can load the data in the regions that these spheres overlap with,
+only reading the appropriate particle data from file. Each coloured region
+shows the top-level cells that would be loaded for the corresponding circled
+galaxy.](figure.pdf)
 
 To solve the dynamic range problem, we can turn to the spatial arrangement of
 the particle data. Simulations in SWIFT are performed in a cuboid volume that
@@ -120,7 +121,7 @@ process ensures that as little data is read from disk as possible.
 # Why swiftsimio?
 
 There are many python libraries that are able to read the Gadget-style
-formatted HDF5 data that SWIFT outputs, not limited to but including `yt`
+formatted HDF5 data that SWIFT outputs, not limited to but including: `yt`
 [@yt], `pynbody` [@pynbody] and `pnbody` [@pnbody]. The other option is simply
 to use the `h5py` library directly, and forgo any extra processing of the data.
 
@@ -134,10 +135,10 @@ their internals, which would have taken significantly more time (due to their
 more complex codebases) or would have been unwelcome changes due to their
 impact on the users of other simulation codes.
 
-We can also that `swiftsimio` remains updated and constantly in-sync with the
-rapidly changing SWIFT code, as well as ensure that extra routines that are
-part of the library (e.g. visualisation) use the same definitions and functions
-that are implemented in the main simulation code.
+We can also ensure that `swiftsimio` remains updated and constantly in-sync
+with the rapidly changing SWIFT code, as well as ensure that extra routines
+that are part of the library (e.g. visualisation) use the same definitions and
+functions that are implemented in the main simulation code.
 
 The `swiftsimio` package will enable the next generation of cosmological
 simulations, ran with SWIFT, to be analysed on substantially smaller machines
