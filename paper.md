@@ -76,7 +76,8 @@ data = load("/path/to/snapshot.hdf5")
 coordinates = data.gas.coordinates
 ```
 where here `coordinates` is an `unyt` array containing the co-ordinates of all
-of the gas particles in the file.
+of the gas particles in the file with appropriate units and cosmology information
+attached.
 
 The table below shows what each particle type corresponds to and how it is
 accessed in `swiftsimio`.
@@ -90,29 +91,24 @@ accessed in `swiftsimio`.
 |       4       |      `stars`      | Star particles representing either individual stars or a stellar population.                    |
 |       5       |   `black_holes`   | Black hole particles representing individual black holes.                                       |
 
-The rest of the fields in the above data are metadata fields, and are used to
-include information about the physics that is included as well as the current
-global state (e.g. time) of the simulation.
-
-For instance, to load a snapshot and access the gas co-ordinates
-
-This metadata also allows an `unyt` array to be created for each field,
-ensuring consistent units throughout all analysis. A custom cosmology object
-also ensures that the differences between quantities co-moving with the
-expansion of the universe and those stored in 'physical' co-ordinates are
-maintained.
-
 # Solving the data reduction challenge
 
-To solve this dynamic range problem, we can turn to the spatial arrangement of
-the data. Simulations in SWIFT are performed in a cuboid volume that is split
-into a fixed number of top-level cells. When a snapshot of the simulation is
-dumped, each array is written to disk top-level cell by top-level cell,
-ensuring a well-characterised order.  The order in which the data is stored is
-then written as metadata in the `Cells` dataset.  The `SWIFTMask` object within
-`swiftsimio` uses this metadata to provide a mask to be used with the `h5py`
-library to read a sub-set of the particle data. This process ensures that as
-little data is read from disk as possible.
+![Pictorial representation of the top-level grid in SWIFT. The background shows
+the distribution of matter in the snapshot, with selected bound objects ('haloes')
+circled. `swiftsimio` can extract the particles from the snapshot contained in
+these haloes by finding the top-level cells that this sphere overlaps with, only
+load data contained in those cells. Each coloured region shows the top-level
+cells that would be loaded for the corresponding circled halo.](figure.pdf)
+
+To solve the dynamic range problem, we can turn to the spatial arrangement of
+the particle data. Simulations in SWIFT are performed in a cuboid volume that
+is split into a fixed number of top-level cells. When a snapshot of the
+simulation is dumped, each array is written to disk top-level cell by top-level
+cell, ensuring a well-characterised order. The order in which the data is
+stored is then written as metadata in the `Cells` dataset in the snapshot file.
+The `SWIFTMask` object within `swiftsimio` uses this metadata to provide a mask
+to be used with the `h5py` library to read a sub-set of the particle data. This
+process ensures that as little data is read from disk as possible.
 
 # Why swiftsimio?
 
@@ -131,7 +127,24 @@ their internals, which would have taken significantly more time (due to their
 more complex codebases) or would have been unwelcome changes due to their
 impact on the users of other simulation codes.
 
+We can also that `swiftsimio` remains updated and constantly in-sync with the
+rapidly changing SWIFT code, as well as ensure that extra routines that are
+part of the library (e.g. visualisation) use the same definitions and functions
+that are implemented in the main simulation code.
+
+The `swiftsimio` package will enable the next generation of cosmological
+simulations, ran with SWIFT, to be analysed on substantially smaller machines
+than were previously required with little extra effort from day-to-day users.
+
 # Acknowledgements
 
+JB is supported by STFC studentship ST/R504725/1. This work used the
+DiRAC@Durham facility managed by the Institute for Computational Cosmology on
+behalf of the STFC DiRAC HPC Facility (www.dirac.ac.uk). The equipment was
+funded by BEIS capital funding via STFC capital grants ST/K00042X/1,
+ST/P002293/1, ST/R002371/1 and ST/S002502/1, Durham University and STFC
+operations grant ST/R000832/1. DiRAC is part of the National e-Infrastructure.
+We would like to extend our thanks specifically to Alastair Basden and his team
+for managing the DiRAC Memory Intensive service.
 
 # References
