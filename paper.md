@@ -1,5 +1,5 @@
 ---
-title: "swiftsimio: A python library for reading SWIFT data"
+title: "`swiftsimio`: A python library for reading SWIFT data"
 tags:
   - Python
   - astronomy
@@ -14,6 +14,8 @@ affiliations:
   - name: Institute for Computational Cosmology, Durham University
     index: 1
 date: 4 May 2020
+codeRepository: https://github.com/swiftsim/swiftsimio
+license: LGPLv3
 bibliography: bibliography.bib
 ---
 
@@ -41,7 +43,7 @@ particles in a single snapshot used 82 Gb of storage space. State-of-the-art
 simulations are now using at least 10 times as many particles as this, making
 an analysis pipeline that reads the whole array each time expensive in the best
 case and infeasible in the worst. There are two useful properties of this data:
-it is stored in the HDF5 format, allowing for easy slicing, and usually users
+it is stored in the HDF5 format [@hdf5], allowing for easy slicing, and usually users
 are interested in a very small sub-set of the data, usually less than 1%, at a
 time.
 
@@ -56,51 +58,43 @@ usually interested in using the particle data present in a few objects
 # Structure of a SWIFT snapshot
 
 At pre-determined times during a SWIFT simulation, a full particle dump is
-performed.  This particle dump is stored in the HDF5 format [@hdf5], with
+performed.  This particle dump is stored in the HDF5 format, with
 arrays corresponding to different properties, with the overall structure of the
-file being compatible with the Gadget-2 format [@Gadget2].
+file being compatible with the Gadget-2 format [@Gadget2]. This is to enable
+cross-compatibility with other software projects.
 
-An example snapshot would be as follows:
-```
-eagle_0003.hdf5
-├Cells 
-├Code (15 attributes)
-├Cosmology (22 attributes)
-├GravityScheme (19 attributes)
-├Header (14 attributes)
-├HydroScheme (36 attributes)
-├InternalCodeUnits (5 attributes)
-├Parameters (295 attributes)
-├PartType0
-│ ├Coordinates	[float64: 49615231 × 3] (11 attributes)
-| ⋮
-│ └ViscosityParameters	[float32: 49615231] (11 attributes)
-├PartType1
-│ ├Coordinates	[float64: 53157376 × 3] (11 attributes)
-| ⋮
-│ └Velocities	[float32: 53157376 × 3] (11 attributes)
-├Policy (22 attributes)
-├StarsScheme (8 attributes)
-├SubgridScheme (13 attributes)
-├Units (5 attributes)
-└UnusedParameters (1 attributes)
-```
-Each of the `PartType` sections include particle data for different types. The
-table below shows what each particle type corresponds to and how it is accessed
-in `swiftsimio`.
+The SWIFT snapshot files have main datasets called `PartType{0,1,2,3,4,5}`,
+each with sub-datasets such as `Coordinates`, `Velocities`, etc.  that contain
+the co-ordinates and velocities for particles of that type respectively. When the
+file is opened in `swiftsimio`, this is translated to an object hierarchy, so that
+for a user to access the co-ordinates of the gas particles they would use code
+similar to:
+```python
+from swiftsimio import load
 
-| Particle type | Description                                                                                     | `swiftsimio` name |
-|---------------|-------------------------------------------------------------------------------------------------|-------------------|
-| 0             | Gas particles, the only type of particles to have hydrodynamics calculations performed on them. | `gas`             |
-| 1             | Dark matter particles, only feel the force of gravity.                                          | `dark_matter`     |
-| 2             | Boundary particles; the same as dark matter but typically more massive.                         | `boundary`        |
-| 3             | Boundary particles; the same as dark matter but typically more massive.                         | `second_boundary` |
-| 4             | Star particles representing either individual stars or a stellar population.                    | `stars`           |
-| 5             | Black hole particles representing individual black holes.                                       | `black_holes`     |
+data = load("/path/to/snapshot.hdf5")
+coordinates = data.gas.coordinates
+```
+where here `coordinates` is an `unyt` array containing the co-ordinates of all
+of the gas particles in the file.
+
+The table below shows what each particle type corresponds to and how it is
+accessed in `swiftsimio`.
+
+| Particle type | `swiftsimio` name | Description                                                                                     |
+|:-------------:|:-----------------:|-------------------------------------------------------------------------------------------------|
+|       0       |       `gas`       | Gas particles, the only type of particles to have hydrodynamics calculations performed on them. |
+|       1       |   `dark_matter`   | Dark matter particles, only feel the force of gravity.                                          |
+|       2       |     `boundary`    | Boundary particles; the same as dark matter but typically more massive.                         |
+|       3       | `second_boundary` | Boundary particles; the same as dark matter but typically more massive.                         |
+|       4       |      `stars`      | Star particles representing either individual stars or a stellar population.                    |
+|       5       |   `black_holes`   | Black hole particles representing individual black holes.                                       |
 
 The rest of the fields in the above data are metadata fields, and are used to
 include information about the physics that is included as well as the current
-global state (e.g.  time) of the simulation.
+global state (e.g. time) of the simulation.
+
+For instance, to load a snapshot and access the gas co-ordinates
 
 This metadata also allows an `unyt` array to be created for each field,
 ensuring consistent units throughout all analysis. A custom cosmology object
