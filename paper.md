@@ -16,7 +16,8 @@ authors:
 affiliations:
   - name: Institute for Computational Cosmology, Durham University
     index: 1
-  - name: Edinburgh Parallel Computing Centre, University of Edinburgh
+  - name: School of Physics and Astronomy, University of Edinburgh
+    index: 2
 date: 4 May 2020
 codeRepository: https://github.com/swiftsim/swiftsimio
 license: LGPLv3
@@ -121,6 +122,12 @@ stored is then written as metadata in the `Cells` dataset in the snapshot file.
 The `SWIFTMask` object within `swiftsimio` uses this metadata to provide a mask
 to be used with the `h5py` library to read a sub-set of the particle data. This
 process ensures that as little data is read from disk as possible.
+
+The use of this masking functionality is unique to `swiftsimio` and allows for
+significantly reduced memory footprint and cost relative to reading the full
+snapshot. Other libraries, such as `yt` [@yt] offer similar functionality through
+the creation of a hashtable on the first read of the snapshot, but our approach
+requires no extra computation or files to achieve.
 
 # Why swiftsimio?
 
