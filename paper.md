@@ -155,7 +155,7 @@ The `swiftsimio` package will enable the next generation of cosmological
 simulations, ran with SWIFT, to be analysed on substantially smaller machines
 than were previously required with little extra effort from day-to-day users.
 
-`swiftsimio` is hosted on [GitHub](https://github.com/swiftsim/swiftismio) and
+`swiftsimio` is hosted on [GitHub](https://github.com/swiftsim/swiftsimio) and
 has documentation available through
 [ReadTheDocs](https://swiftsimio.readthedocs.io).
 
