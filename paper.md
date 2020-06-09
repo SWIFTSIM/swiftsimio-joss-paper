@@ -10,9 +10,13 @@ authors:
   - name: Josh Borrow
     orcid: 0000-0002-1327-1921
     affiliation: 1
+  - name: Alexei Borrisov
+    orcid: 0000-0001-6247-471X
+    affiliation: 2
 affiliations:
   - name: Institute for Computational Cosmology, Durham University
     index: 1
+  - name: Edinburgh Parallel Computing Centre, University of Edinburgh
 date: 4 May 2020
 codeRepository: https://github.com/swiftsim/swiftsimio
 license: LGPLv3
@@ -144,15 +148,20 @@ The `swiftsimio` package will enable the next generation of cosmological
 simulations, ran with SWIFT, to be analysed on substantially smaller machines
 than were previously required with little extra effort from day-to-day users.
 
+`swiftsimio` is hosted on [GitHub](https://github.com/swiftsim/swiftismio) and
+has documentation available through
+[ReadTheDocs](https://swiftsimio.readthedocs.io).
+
 # Acknowledgements
 
-JB is supported by STFC studentship ST/R504725/1. This work used the
-DiRAC@Durham facility managed by the Institute for Computational Cosmology on
-behalf of the STFC DiRAC HPC Facility (www.dirac.ac.uk). The equipment was
-funded by BEIS capital funding via STFC capital grants ST/K00042X/1,
-ST/P002293/1, ST/R002371/1 and ST/S002502/1, Durham University and STFC
-operations grant ST/R000832/1. DiRAC is part of the National e-Infrastructure.
-We would like to extend our thanks specifically to Alastair Basden and his team
-for managing the DiRAC Memory Intensive service.
+JB is supported by STFC studentship ST/R504725/1. AB is supported by STFC
+grants ST/R001006/1 and ST/P002447/1 as part of the DiRAC RSE team. This work
+used the DiRAC@Durham facility managed by the Institute for Computational
+Cosmology on behalf of the STFC DiRAC HPC Facility (www.dirac.ac.uk). The
+equipment was funded by BEIS capital funding via STFC capital grants
+ST/K00042X/1, ST/P002293/1, ST/R002371/1 and ST/S002502/1, Durham University
+and STFC operations grant ST/R000832/1. DiRAC is part of the National
+e-Infrastructure.  We would like to extend our thanks specifically to Alastair
+Basden and his team for managing the DiRAC Memory Intensive service.
 
 # References
