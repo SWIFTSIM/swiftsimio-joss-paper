@@ -53,7 +53,7 @@ are interested in a very small sub-set of the data, usually less than 1%, at a
 time.
 
 This requirement to load less than 1% of the data at a time is primarily due to
-the huge amount of dynamic range in these simulations [@dynamicRange]. Although
+the huge dynamic range present in these simulations [@dynamicRange]. Although
 the simulation volume may be hundreds of megaparsecs on a side, the objects
 that form under self-gravity are typically less than a few megaparsecs in
 diameter, representing a very small proportion of the total volume. Users are
