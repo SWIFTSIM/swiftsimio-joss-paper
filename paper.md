@@ -18,7 +18,7 @@ affiliations:
     index: 1
   - name: School of Physics and Astronomy, University of Edinburgh
     index: 2
-date: 4 May 2020
+date: 26 June 2020
 codeRepository: https://github.com/swiftsim/swiftsimio
 license: LGPLv3
 bibliography: bibliography.bib
@@ -151,6 +151,10 @@ with the rapidly changing SWIFT code, as well as ensure that extra routines
 that are part of the library (e.g. visualisation) use the same definitions and
 functions that are implemented in the main simulation code.
 
+Finally, `swiftsimio` includes many other features useful to users of the
+SWIFT cosmological simulation code, such as parallel visualisation and
+data repackaging.
+
 The `swiftsimio` package will enable the next generation of cosmological
 simulations, ran with SWIFT, to be analysed on substantially smaller machines
 than were previously required with little extra effort from day-to-day users.
@@ -168,7 +172,7 @@ Cosmology on behalf of the STFC DiRAC HPC Facility (www.dirac.ac.uk). The
 equipment was funded by BEIS capital funding via STFC capital grants
 ST/K00042X/1, ST/P002293/1, ST/R002371/1 and ST/S002502/1, Durham University
 and STFC operations grant ST/R000832/1. DiRAC is part of the National
-e-Infrastructure.  We would like to extend our thanks specifically to Alastair
+e-Infrastructure. We would like to extend our thanks specifically to Alastair
 Basden and his team for managing the DiRAC Memory Intensive service.
 
 # References
